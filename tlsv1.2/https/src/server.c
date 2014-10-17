@@ -117,7 +117,23 @@ void Servlet(SSL* ssl) /* Serve the connection -- threadable */
 {
 	char buf[1024];
 	int sd, bytes;
-	const char* message = "Hello World!";
+	
+	char enter[3] = { 0x0d, 0x0a, 0x00 };
+	
+	char* header = "HTTP/1.1 200 OK";
+	char* header_0 = "Content-Type: text/html";
+	char* header_1 = "Content-Length: 38";
+	char* html = "<html><body><h1>Hello World!</h1></body></html>";
+	
+	char output[1024];
+	strcpy(output, header);
+	strcat(output, enter);
+	strcat(output, header_0);
+	strcat(output, enter);
+	strcat(output, header_1);
+	strcat(output, enter);
+	strcat(output, enter);
+	strcat(output, html);
 	
 	if ( SSL_accept(ssl) == FAIL )     /* do SSL-protocol accept */
 		ERR_print_errors_fp(stderr);
@@ -129,7 +145,7 @@ void Servlet(SSL* ssl) /* Serve the connection -- threadable */
 		{
 			buf[bytes] = 0;
 			printf("Client msg: \"%s", buf);
-			SSL_write(ssl, message, strlen(message)); /* send reply */
+			SSL_write(ssl, output, strlen(output)); /* send reply */
 		}
 		else
 			ERR_print_errors_fp(stderr);
