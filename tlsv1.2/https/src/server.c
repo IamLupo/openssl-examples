@@ -120,20 +120,15 @@ void Servlet(SSL* ssl) /* Serve the connection -- threadable */
 	
 	char enter[3] = { 0x0d, 0x0a, 0x00 };
 	
-	char* header = "HTTP/1.1 200 OK";
-	char* header_0 = "Content-Type: text/html";
-	char* header_1 = "Content-Length: 38";
-	char* html = "<html><body><h1>Hello World!</h1></body></html>";
-	
 	char output[1024];
-	strcpy(output, header);
+	strcpy(output, "HTTP/1.1 200 OK");
 	strcat(output, enter);
-	strcat(output, header_0);
+	strcat(output, "Content-Type: text/html");
 	strcat(output, enter);
-	strcat(output, header_1);
+	strcat(output, "Content-Length: 47");
 	strcat(output, enter);
 	strcat(output, enter);
-	strcat(output, html);
+	strcat(output, "<html><body><h1>Hello World!</h1></body></html>");
 	
 	if ( SSL_accept(ssl) == FAIL )     /* do SSL-protocol accept */
 		ERR_print_errors_fp(stderr);
